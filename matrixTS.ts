@@ -1,3 +1,19 @@
+class Matrix{
+	constructor(public row:number, public col:number){
+		row= this.row
+		col= this.col
+
+		
+	let MatC:Array<Array<number>>= new Array()
+		for(let i = 1; i<=this.row;i++){
+			MatC.push(Array(this.col))
+		}
+
+	}
+}
+
+
+
 function size(U:number[][]):number[]{
     let size:number[] = [U.length, U[0].length] 
 

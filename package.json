@@ -1,0 +1,20 @@
+{
+  "name": "matrixTS",
+  "version": "1.0.0",
+  "description": "Set of matrix calculation functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipeaamacedo/matrixTS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipeaamacedo/matrixTS/issues"
+  },
+  "homepage": "https://github.com/felipeaamacedo/matrixTS#readme"
+}
