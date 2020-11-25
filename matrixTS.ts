@@ -1,16 +1,15 @@
-class Matrix{
-	constructor(public row:number, public col:number){
-		row= this.row
-		col= this.col
-
+//class Matrix{
+	//constructor(public row:number, public col:number){
+		//row= this.row
+		//col= this.col
+	//}
 		
-	let MatC:Array<Array<number>>= new Array()
-		for(let i = 1; i<=this.row;i++){
-			MatC.push(Array(this.col))
-		}
+	//public	matrix:Array<Array<number>> = new Array()
+		//for(i = 1; i<=this.row;i++){
+			//this.matrix.push(Array(this.col))
+		//}
 
-	}
-}
+//}
 
 
 
@@ -66,17 +65,61 @@ function transpose(M:number[][]):number[][]{
 	return Mtransp
 }
 
-//function determinant(Mat:number[][]):number{
-	//let det:number = 0
-	//if (size(Mat)[0] === size(Mat)[1]){
-		//det =  (Mat[0][0]*Mat[1][1]) - (Mat[0][1]*Mat[1][0])
-	//}else{
-		//let total:number = 0
+function minor(M:number[][], del_row:number, del_col:number):number[][]{
+	let M_row:number = size(M)[0]
+	let M_col:number = size(M)[1]	
+	let Minor_Matrix:Array<Array<number>> = new Array()
+	let flagRow:boolean = false
+	let flagCol:boolean = false
 
-	//}
 
-	//return det
-//}
+	for(let i = 1; i<=M_col-1;i++){
+		Minor_Matrix.push(Array(M_row-1))
+	}
+
+	for(let j = 0; j<M_col; j++){
+		flagRow = false
+		if((j == del_col-1) && (del_col <M_col)){
+			j++	
+			flagCol=true
+		}
+		for(let i = 0; i<M_row; i++){
+			if((i == del_row-1 )&&(del_row <M_row)){
+				i++		
+				flagRow=true
+			}
+			if ((flagCol==true)&&(flagRow==false)){
+				Minor_Matrix[i][j-1] = M[i][j]
+			}else if((flagCol==false)&&(flagRow==true)){
+				Minor_Matrix[i-1][j] = M[i][j]
+			}else if((flagCol==true)&&(flagRow==true)){
+				Minor_Matrix[i-1][j-1] = M[i][j]
+			}else{
+				Minor_Matrix[i][j] = M[i][j]
+			}
+		}
+	}
+
+	return Minor_Matrix 
+}
+
+function determinant(M:number[][]):number{
+	let M_row:number = size(M)[0]
+	let M_col:number = size(M)[1]	
+	
+	if(M_row==M_col && M_col+M_row>=4){
+		for(let j = 0; j<=M_row; j++){
+			for(let i = 0; i<=M_row; i++){
+				// STILL NEEDS TO ADD THE MINOR OF IJ
+				//sum = sum + M[i][j]*(-1)**(i+j)*
+			}
+		}	
+	}	
+
+	let minor = 0
+	return minor
+
+}
 
 let A:number[][]= [[3, 4, 2]]
 let B:number[][]= [[13, 9, 7, 15], [8, 7, 4, 6], [6, 4, 0, 3]]
@@ -86,7 +129,9 @@ let C:number[][]= multiply(A,B)
 let F:number[][]= multiply(D,E)
 let G:number = F[0][0]
 let H:number[][]= [[1,3,4],[0,2,3]]
+let I:number[][]= [[4,1,2],[0,2,0],[1,0,2]]
 
+console.log(minor(I,1,1))
 
 console.log(A)
 console.log(size(A))
