@@ -1,5 +1,5 @@
-class Matrix{
-    public data:number[][] = new Array()
+export class Matrix{
+    private _data:number[][] = new Array()
 
     constructor(private _row:number, private _col:number){
         let row = this._row
@@ -8,7 +8,7 @@ class Matrix{
         
         //CREATING THE MATRIX
         for(let i=0; i<this._row; i++){
-            this.data.push(Array(this._col))        
+            this._data.push(Array(this._col))        
         }
     }
 
@@ -20,7 +20,24 @@ class Matrix{
     	return this._col
     }
 
-    determinant():number{
+    get data(){
+    	return this._data
+    }
+
+    set data(A:number[][]){
+    	if ((A.length !== this.row)&&(A[0].length !== this.col)){
+		throw new Error('Number of row and of col are different from the specified in the matrix, please check it')
+	}else{
+		this._data = A
+	}	
+    }
+
+
+    size():number[]{
+    	return [this.row, this.col]
+    }
+
+    public determinant():number{
         if(this.row !== this._col){
             throw new Error('The matrix is not a square')
         }else{
@@ -37,7 +54,7 @@ class Matrix{
         }
     }
 
-    sub_matrix(del_row:number, del_col:number):Matrix{
+   protected sub_matrix(del_row:number, del_col:number):Matrix{
 	    del_col = del_col-1
 	    del_row = del_row-1
 
@@ -74,41 +91,33 @@ class Matrix{
 
 
 
-function size(U:number[][]):number[]{
-    let size:number[] = [U.length, U[0].length] 
 
-    return size
-}
+export function multiply(MatA:Matrix, MatB:Matrix):Matrix{
+	let MatA_Row:number = MatA.row 
+	let MatA_Col:number = MatA.col
 
-function multiply(MatA:number[][], MatB:number[][]):number[][]{
-	let MatA_Row:number = size(MatA)[0]
-	let MatA_Col:number = size(MatA)[1]
-
-	let MatB_Row:number = size(MatB)[0]
-	let MatB_Col:number = size(MatB)[1]
+	let MatB_Row:number = MatB.row 
+	let MatB_Col:number = MatB.col 
 
 	if (MatA_Col !== MatB_Row){
 		throw new Error('Number of cols in Mat1 is different from Mat2 rows')
 	}
 
-	let MatC:Array<Array<number>>= new Array()
-		for(let i = 1; i<=MatA_Row;i++){
-			MatC.push(Array(MatB_Col))
-		}
+	let MatC:Matrix = new Matrix(MatA_Row, MatB_Col)
 
 	for(let i=0; i<MatA_Row ;i++){
 		for(let j=0; j<MatB_Col; j++){
 			let sum:number = 0
 			for(let k=0; k<MatB_Row; k++){
-				sum = sum + MatA[i][k]*MatB[k][j]
+				sum = sum + MatA.data[i][k]*MatB.data[k][j]
 			}
-			MatC[i][j]= sum	
+			MatC.data[i][j]= sum	
 		}
 	}
 	return MatC
 }
 
-function transpose(M:Matrix):Matrix{
+export function transpose(M:Matrix):Matrix{
 	let Mtransp:Matrix= new Matrix(M.row, M.col)
 	for(let i=0; i<M.row;i++){
 		for(let j=0;j<M.col;j++){
