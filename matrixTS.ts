@@ -128,3 +128,42 @@ export function transpose(M:Matrix):Matrix{
 	return Mtransp
 }
 
+export function MatSum(MatA:Matrix, MatB:Matrix):Matrix{
+	let MatSum:Matrix = new Matrix(MatA.row, MatA.col)
+	for(let j = 0; j<MatA.col; j++){
+		for(let i = 0; i<MatA.row; i++){
+			MatSum.data[i][j] = MatA.data[i][j] + MatB.data[i][j] 		
+		}
+	}	
+	return MatSum
+}
+
+
+export function MatSubtr(MatA:Matrix, MatB:Matrix):Matrix{
+	let MatSubtr:Matrix = new Matrix(MatA.row, MatA.col)
+	for(let j = 0; j<MatA.col; j++){
+		for(let i = 0; i<MatA.row; i++){
+			MatSubtr.data[i][j] = MatA.data[i][j] - MatB.data[i][j] 		
+		}
+	}	
+	return MatSubtr
+}
+
+
+export function MatIdentity(row:number, col:number):Matrix{
+	if(row == col){
+	let MatIdentity:Matrix = new Matrix(row, col)
+	for (let j = 0; j<col; j++){
+		for (let i = 0; i<row;i++){
+			if(i==j){
+				MatIdentity.data[i][j] = 1
+			}else{
+				MatIdentity.data[i][j] = 0
+			}
+		}
+	}
+	return MatIdentity
+	}else{
+	return throw new Error('Matrix should be square.')
+	}
+}
