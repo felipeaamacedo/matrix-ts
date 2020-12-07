@@ -21,15 +21,18 @@ export class Matrix{
     }
 
     get data(){
-    	return this._data
+	return this._data
     }
 
     set data(A:number[][]){
-    	if ((A.length !== this.row)&&(A[0].length !== this.col)){
-		throw new Error('Number of row and of col are different from the specified in the matrix, please check it')
-	}else{
-		this._data = A
-	}	
+       for(let j=0; j<this.row;j++){	
+		if ((A.length !== this.row)&&(A[j].length !== this.col)){
+			throw new Error('Number of rows or colums are different from the specified in the matrix, please check it')
+		
+		}else{
+			this._data = A
+		}	
+       }
     }
 
 
@@ -164,6 +167,68 @@ export function MatIdentity(row:number, col:number):Matrix{
 	}
 	return MatIdentity
 	}else{
-	return throw new Error('Matrix should be square.')
+		 throw new Error('Matrix should be square.')
 	}
 }
+
+export function GaussEli(A:Matrix, b:number[]):number[]{
+	let x:Array<number> = new Array(A.row)
+	let M:Matrix = new Matrix(A.row,A.col)
+	for(let j=0; j<A.col; j++){
+		for(let i=j+1; i<A.col+1; i++){
+			M.data[i][j] = A.data[i][j] / A.data[j][j]
+			for(let k=j+1; k<A.col+1;k++){
+				A.data[i][k] = A.data[i][k] - M.data[i][j]*A.data[j][k]	
+			}
+			b[i] = b[i] - M.data[i][j]*b[j]
+		}	
+	}
+
+	return x
+}
+
+export function GaussJordan(A:Matrix):Matrix{
+	let InvMatrix:Matrix = MatIdentity(A.row, A.col) 
+	
+	for(let j = 0; j<A.col; j++){
+		for(let i = 0; i<A.row; i++){
+			if(j==i){
+				let MultRow:number = A.data[i][j] 
+				console.log(MultRow)
+				for(let k=0;k<A.row;k++){
+					A.data[k][j] = MultRow*A.data[k][j]/A.data[k][j]
+					InvMatrix.data[k][j] = MultRow*InvMatrix.data[k][j]
+				}
+			}
+		}
+	}
+console.log(A.data)
+console.log(InvMatrix.data)
+
+	return InvMatrix
+}
+
+
+export function changeRow(M:Matrix, row1:number, row2:number):Matrix{
+//
+//
+//	ISSUE: Enhence this debug that it should warn if rows or cols specified are out of scope. that is row1>M.row or row2>M.row or if row2 or row1 are < zero.
+//
+//
+	if(((row1 < 0)||(row1 > M.row)) && ((row2 < 0)||(row2 > M.row))){
+		throw new Error('Number of rows specified out of limits')
+	}
+
+	let saveRow:Array<number> = new Array(M.col)
+	for(let j=0; j<M.col; j++){
+		saveRow[j] = M.data[row1][j]
+	}	
+	for(let j=0; j<M.col;j++){
+		M.data[row1][j] = M.data[row2][j]
+	}
+	for(let j=0; j<M.col;j++){
+		M.data[row2][j] = saveRow[j]
+	}
+	return M
+}
+
