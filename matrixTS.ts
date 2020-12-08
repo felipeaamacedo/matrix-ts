@@ -210,14 +210,14 @@ console.log(InvMatrix.data)
 
 
 export function changeRow(M:Matrix, row1:number, row2:number):Matrix{
-//
-//
-//	ISSUE: Enhence this debug that it should warn if rows or cols specified are out of scope. that is row1>M.row or row2>M.row or if row2 or row1 are < zero.
-//
-//
-	if(((row1 < 0)||(row1 > M.row)) && ((row2 < 0)||(row2 > M.row))){
+	//ERROR CHECKER if either input rows are negative or higher value than input Matrix.
+	if(((row1 < 0)||(row2 < 0))){
 		throw new Error('Number of rows specified out of limits')
 	}
+	if((row1 >= M.row)||(row2 >= M.row)){
+		throw new Error('Number of rows specified out of limits')
+	}
+	//End of ERROR CHECKER
 
 	let saveRow:Array<number> = new Array(M.col)
 	for(let j=0; j<M.col; j++){

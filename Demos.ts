@@ -31,4 +31,4 @@ console.log(MatSubtr(A,G).data)
 
 console.log(MatIdentity(3,3).data)
 
-console.log(changeRow(H, 0, 1))
+console.log(changeRow(H, 2, 1))
