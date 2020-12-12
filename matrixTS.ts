@@ -2,10 +2,6 @@ export class Matrix{
     private _data:number[][] = new Array()
 
     constructor(private _row:number, private _col:number){
-        let row = this._row
-        let col = this._col
-
-        
         //CREATING THE MATRIX
         for(let i=0; i<this._row; i++){
             this._data.push(Array(this._col))        
@@ -152,6 +148,13 @@ export function MatSubtr(MatA:Matrix, MatB:Matrix):Matrix{
 	return MatSubtr
 }
 
+export function ArraySubtr(ArrayA:number[], ArrayB:number[]):number[]{
+	let ArraySubtr:number[] = new Array(Array.length)
+		for(let j = 0; j<ArraySubtr.length; j++){
+			ArraySubtr[j] = ArrayA[j] - ArrayB[j] 		
+		}
+	return ArraySubtr
+}
 
 export function MatIdentity(row:number, col:number):Matrix{
 	if(row == col){
@@ -187,29 +190,69 @@ export function GaussEli(A:Matrix, b:number[]):number[]{
 	return x
 }
 
-export function GaussJordan(A:Matrix):Matrix{
-	let InvMatrix:Matrix = MatIdentity(A.row, A.col) 
-	
-	for(let j = 0; j<A.col; j++){
-		for(let i = 0; i<A.row; i++){
-			if(j==i){
-				let MultRow:number = A.data[i][j] 
-				console.log(MultRow)
-				for(let k=0;k<A.row;k++){
-					A.data[k][j] = MultRow*A.data[k][j]/A.data[k][j]
-					InvMatrix.data[k][j] = MultRow*InvMatrix.data[k][j]
-				}
+/**
+ *	This function uses Gauss-Jordan elimination to invert matrices.
+ *	@param M Matrix to be inverted 
+ */
+export function inv(M:Matrix):Matrix{
+	let M_aug:Matrix = augmentedMatrix(M) 
+	let repeatFlag:boolean = false
+	for(let i = 0; i<M_aug.row; i++){
+        if(repeatFlag == true){
+            i = i-1
+        }
+		if(M_aug.data[i][i] == 0){
+            if(i+1 < M_aug.row){
+                swapRow(M_aug,i,i+1)
+                repeatFlag = true
+            }else{
+                throw new Error('This matrix is not inverteble')
+            }
+            M_aug.data[i] = multiplyRowByConstant(M_aug.data[i],1/M_aug.data[i][i])
+        }
+		for(let k=0; k<M_aug.row;k++){
+			if(k!==i){
+				M_aug.data[k] = ArraySubtr(M_aug.data[k],multiplyRowByConstant(M_aug.data[i], M_aug.data[k][i]))
 			}
 		}
 	}
-console.log(A.data)
-console.log(InvMatrix.data)
-
-	return InvMatrix
+	return M_aug
 }
 
+export function copyMatrix(Mto:Matrix, Mfrom:Matrix):Matrix{
+    for(let j = 0; j<Mfrom.col;j++){
+        for(let i=0; i<Mfrom.row;i++){
+            Mto.data[i][j] = Mfrom.data[i][j]
+        }
+    }
+    return Mto
+}
 
-export function changeRow(M:Matrix, row1:number, row2:number):Matrix{
+export function augmentedMatrix(M:Matrix):Matrix{
+    let augmentedMatrix:Matrix = new Matrix(M.row,M.col + M.col)
+    let identity:Matrix = MatIdentity(M.row, M.col)
+
+    for(let j = 0; j<M.col; j++){
+        for(let i = 0; i<augmentedMatrix.row; i++){
+            augmentedMatrix.data[i][j] = M.data[i][j]
+        }
+    }
+
+    for(let j = M.col; j<augmentedMatrix.col; j++){
+        for(let i = 0; i<augmentedMatrix.row; i++){
+            augmentedMatrix.data[i][j] = identity.data[i][j-M.col]
+        }
+    }
+    return augmentedMatrix
+}
+
+/** 
+* This function swaps two chosen rows in a given matrix
+* @param M choose the Matrix that rows will be swaped.
+* @param row1 define row1 to be swaped
+* @param row2 define second row to be swaped with the first
+*/
+export function swapRow(M:Matrix, row1:number, row2:number):Matrix{
 	//ERROR CHECKER if either input rows are negative or higher value than input Matrix.
 	if(((row1 < 0)||(row2 < 0))){
 		throw new Error('Number of rows specified out of limits')
@@ -219,16 +262,31 @@ export function changeRow(M:Matrix, row1:number, row2:number):Matrix{
 	}
 	//End of ERROR CHECKER
 
+    let swapMatrix:Matrix = new Matrix(M.row, M.col)
+    copyMatrix(swapMatrix, M)
+
 	let saveRow:Array<number> = new Array(M.col)
 	for(let j=0; j<M.col; j++){
-		saveRow[j] = M.data[row1][j]
+		saveRow[j] = swapMatrix.data[row1][j]
 	}	
 	for(let j=0; j<M.col;j++){
-		M.data[row1][j] = M.data[row2][j]
+		swapMatrix.data[row1][j] = swapMatrix.data[row2][j]
 	}
 	for(let j=0; j<M.col;j++){
-		M.data[row2][j] = saveRow[j]
+		swapMatrix.data[row2][j] = saveRow[j]
 	}
-	return M
+	return swapMatrix
 }
 
+/**
+* This function multiplay a given array by a constant number
+* @param Row define the row that will be multiplied by a constant
+* @param constat define the constant that will multiply the row. For a division, just insert 1/constant.
+*/
+export function multiplyRowByConstant(Row:number[], constant:number):number[]{
+    let multipliedArray:number[] = new Array(Row.length)
+    for(let j=0; j<Row.length;j++){
+        multipliedArray[j] = constant*Row[j]
+    }
+    return multipliedArray
+}
