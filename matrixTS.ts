@@ -197,37 +197,28 @@ export function GaussEli(A:Matrix, b:number[]):number[]{
 export function inv(M:Matrix):Matrix{
 	let M_inv:Matrix = new Matrix(M.row, M.col)
 	let M_aug:Matrix = augmentedMatrix(M) 
-	console.log(M_aug.data)
 	let repeatFlag:boolean = false
 	for(let i = 0; i<M_aug.row; i++){
-		console.log('i = ' + i)	
-		console.log(repeatFlag)
 		if(repeatFlag == true){
 		    i = i-1
-		    console.log('entrouFlagTrue')
+		    repeatFlag = false
 		}
 		if(M_aug.data[i][i] == 0){
 		    if(i+1 < M_aug.row){
-			swapRow(M_aug,i,i+1)
+			M_aug = swapRow(M_aug, i, i+1)
 			repeatFlag = true
-			console.log('entrou swap row')
 		    }else{
 			throw new Error('This matrix is not inverteble')
 		    }
 		}else{
-		    console.log(M_aug.data)
 		    M_aug.data[i] = multiplyRowByConstant(M_aug.data[i], (1/M_aug.data[i][i]))
-		    console.log(M_aug.data)
 		}
-			for(let k=0; k<M_aug.row;k++){
-				if(k!==i){
-					M_aug.data[k] = ArraySubtr(M_aug.data[k],multiplyRowByConstant(M_aug.data[i], M_aug.data[k][i]))
-					console.log('k = ' + k)
-		    console.log(M_aug.data)
-				}
-		    
+		for(let k=0; k<M_aug.row;k++){
+			if(k!==i){
+				M_aug.data[k] = ArraySubtr(M_aug.data[k],multiplyRowByConstant(M_aug.data[i], M_aug.data[k][i]))
 			}
-			console.log(M_aug.data)
+	    
+		}
 	}
 
 	for(let j=M.col; j<M_aug.col; j++){
@@ -235,6 +226,7 @@ export function inv(M:Matrix):Matrix{
 			M_inv.data[i][j-M.col] = M_aug.data[i][j]	
 		}
 	}
+	console.log(M_aug)
 	return M_inv 
 }
 
