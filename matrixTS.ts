@@ -149,7 +149,7 @@ export function MatSubtr(MatA:Matrix, MatB:Matrix):Matrix{
 }
 
 export function ArraySubtr(ArrayA:number[], ArrayB:number[]):number[]{
-	let ArraySubtr:number[] = new Array(Array.length)
+	let ArraySubtr:number[] = new Array(ArrayA.length)
 		for(let j = 0; j<ArraySubtr.length; j++){
 			ArraySubtr[j] = ArrayA[j] - ArrayB[j] 		
 		}
@@ -195,28 +195,47 @@ export function GaussEli(A:Matrix, b:number[]):number[]{
  *	@param M Matrix to be inverted 
  */
 export function inv(M:Matrix):Matrix{
+	let M_inv:Matrix = new Matrix(M.row, M.col)
 	let M_aug:Matrix = augmentedMatrix(M) 
+	console.log(M_aug.data)
 	let repeatFlag:boolean = false
 	for(let i = 0; i<M_aug.row; i++){
-        if(repeatFlag == true){
-            i = i-1
-        }
+		console.log('i = ' + i)	
+		console.log(repeatFlag)
+		if(repeatFlag == true){
+		    i = i-1
+		    console.log('entrouFlagTrue')
+		}
 		if(M_aug.data[i][i] == 0){
-            if(i+1 < M_aug.row){
-                swapRow(M_aug,i,i+1)
-                repeatFlag = true
-            }else{
-                throw new Error('This matrix is not inverteble')
-            }
-            M_aug.data[i] = multiplyRowByConstant(M_aug.data[i],1/M_aug.data[i][i])
-        }
-		for(let k=0; k<M_aug.row;k++){
-			if(k!==i){
-				M_aug.data[k] = ArraySubtr(M_aug.data[k],multiplyRowByConstant(M_aug.data[i], M_aug.data[k][i]))
+		    if(i+1 < M_aug.row){
+			swapRow(M_aug,i,i+1)
+			repeatFlag = true
+			console.log('entrou swap row')
+		    }else{
+			throw new Error('This matrix is not inverteble')
+		    }
+		}else{
+		    console.log(M_aug.data)
+		    M_aug.data[i] = multiplyRowByConstant(M_aug.data[i], (1/M_aug.data[i][i]))
+		    console.log(M_aug.data)
+		}
+			for(let k=0; k<M_aug.row;k++){
+				if(k!==i){
+					M_aug.data[k] = ArraySubtr(M_aug.data[k],multiplyRowByConstant(M_aug.data[i], M_aug.data[k][i]))
+					console.log('k = ' + k)
+		    console.log(M_aug.data)
+				}
+		    
 			}
+			console.log(M_aug.data)
+	}
+
+	for(let j=M.col; j<M_aug.col; j++){
+		for(let i=0; i<M_aug.row; i++){
+			M_inv.data[i][j-M.col] = M_aug.data[i][j]	
 		}
 	}
-	return M_aug
+	return M_inv 
 }
 
 export function copyMatrix(Mto:Matrix, Mfrom:Matrix):Matrix{
