@@ -31,11 +31,16 @@ export class Matrix{
        }
     }
 
-
+    /**
+    * Gives the size of a matrix in form of number[]
+    */
     size():number[]{
     	return [this.row, this.col]
     }
 
+    /**
+    * Calculates the determinant of the matrix.
+    */
     public determinant():number{
         if(this.row !== this._col){
             throw new Error('The matrix is not a square')
@@ -53,6 +58,9 @@ export class Matrix{
         }
     }
 
+   /**
+   * Calculates the sub_matrix used in the determinant calculation
+   */
    protected sub_matrix(del_row:number, del_col:number):Matrix{
 	    del_col = del_col-1
 	    del_row = del_row-1
@@ -90,7 +98,11 @@ export class Matrix{
 
 
 
-
+/**
+* Multiply two given matrices, MatA[i][j] and MatB[j][p]
+* @param MatA Input MatA.
+* @param MatB Input MatB.
+*/
 export function multiply(MatA:Matrix, MatB:Matrix):Matrix{
 	let MatA_Row:number = MatA.row 
 	let MatA_Col:number = MatA.col
@@ -116,6 +128,10 @@ export function multiply(MatA:Matrix, MatB:Matrix):Matrix{
 	return MatC
 }
 
+/**
+* Calculates the transpose of a five matrix.
+* @param M Input matrix M to be transposed.
+* /
 export function transpose(M:Matrix):Matrix{
 	let Mtransp:Matrix= new Matrix(M.row, M.col)
 	for(let i=0; i<M.row;i++){
@@ -127,6 +143,11 @@ export function transpose(M:Matrix):Matrix{
 	return Mtransp
 }
 
+/**
+* Sum two matrices with the same order.
+* @param MatA Input the first Matrix
+* @param MatB Input the second matrix
+*/
 export function MatSum(MatA:Matrix, MatB:Matrix):Matrix{
 	let MatSum:Matrix = new Matrix(MatA.row, MatA.col)
 	for(let j = 0; j<MatA.col; j++){
@@ -138,6 +159,11 @@ export function MatSum(MatA:Matrix, MatB:Matrix):Matrix{
 }
 
 
+/**
+* Subtracts two matrices with the same order.
+* @param MatA Input the first Matrix
+* @param MatB Input the second matrix
+*/
 export function MatSubtr(MatA:Matrix, MatB:Matrix):Matrix{
 	let MatSubtr:Matrix = new Matrix(MatA.row, MatA.col)
 	for(let j = 0; j<MatA.col; j++){
@@ -148,6 +174,11 @@ export function MatSubtr(MatA:Matrix, MatB:Matrix):Matrix{
 	return MatSubtr
 }
 
+/**
+* Subtracts two arrays with the same length.
+* @param ArrayA Input the first Array.
+* @param ArrayB Input the second Array.
+*/
 export function ArraySubtr(ArrayA:number[], ArrayB:number[]):number[]{
 	let ArraySubtr:number[] = new Array(ArrayA.length)
 		for(let j = 0; j<ArraySubtr.length; j++){
@@ -156,11 +187,14 @@ export function ArraySubtr(ArrayA:number[], ArrayB:number[]):number[]{
 	return ArraySubtr
 }
 
-export function MatIdentity(row:number, col:number):Matrix{
-	if(row == col){
-	let MatIdentity:Matrix = new Matrix(row, col)
-	for (let j = 0; j<col; j++){
-		for (let i = 0; i<row;i++){
+/**
+* Creates a matrix identity with a given order.
+* @param order Input order of the matrix.
+*/
+export function MatIdentity(order:number):Matrix{
+	let MatIdentity:Matrix = new Matrix(order, order)
+	for (let j = 0; j<order; j++){
+		for (let i = 0; i<order;i++){
 			if(i==j){
 				MatIdentity.data[i][j] = 1
 			}else{
@@ -169,11 +203,13 @@ export function MatIdentity(row:number, col:number):Matrix{
 		}
 	}
 	return MatIdentity
-	}else{
-		 throw new Error('Matrix should be square.')
-	}
 }
 
+/**
+* Calculates linear system using Gaussian elimination. 
+* @param A Input the matrix of coefficients.
+* @param b Input the vector with results
+*/
 export function GaussEli(A:Matrix, b:number[]):number[]{
 	let x:Array<number> = new Array(A.row)
 	let M:Matrix = new Matrix(A.row,A.col)
@@ -226,10 +262,14 @@ export function inv(M:Matrix):Matrix{
 			M_inv.data[i][j-M.col] = M_aug.data[i][j]	
 		}
 	}
-	console.log(M_aug)
 	return M_inv 
 }
 
+/**
+* Copy the values of a matrix to another
+* @param Mto input the matrix that you want the values be copied to
+* @param Mfrom input the matrix that you want the vvalues to be copied from
+*/
 export function copyMatrix(Mto:Matrix, Mfrom:Matrix):Matrix{
     for(let j = 0; j<Mfrom.col;j++){
         for(let i=0; i<Mfrom.row;i++){
@@ -239,9 +279,13 @@ export function copyMatrix(Mto:Matrix, Mfrom:Matrix):Matrix{
     return Mto
 }
 
+/**
+* Creates the augmented matrix to use in matrix inversion.
+* @param M Insert the matrix to be used in the augmented matrix.
+*/
 export function augmentedMatrix(M:Matrix):Matrix{
     let augmentedMatrix:Matrix = new Matrix(M.row,M.col + M.col)
-    let identity:Matrix = MatIdentity(M.row, M.col)
+    let identity:Matrix = MatIdentity(M.row)
 
     for(let j = 0; j<M.col; j++){
         for(let i = 0; i<augmentedMatrix.row; i++){
