@@ -1,5 +1,5 @@
 {
-  "name": "matrixTS",
+  "name": "matrix-ts",
   "version": "1.0.0",
   "description": "Set of matrix calculation functions",
   "main": "index.js",
@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felipeaamacedo/matrixTS.git"
+    "url": "felipeaamacedo/matrix-ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["typescript", "matrix", "felipeaamacedo", "npm" , "package"],
+  "author": "Felipe Alvares de Azevedo Macedo",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/felipeaamacedo/matrixTS/issues"
+    "url": "https://github.com/felipeaamacedo/matrix-ts/issues"
   },
-  "homepage": "https://github.com/felipeaamacedo/matrixTS#readme"
+  "homepage": "https://github.com/felipeaamacedo/matrix-ts#readme"
 }
