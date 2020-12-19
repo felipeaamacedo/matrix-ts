@@ -1,5 +1,5 @@
 {
-  "name": "matrix-ts",
+  "name": "@felipeaamacedo/matrix-ts",
   "version": "1.0.1",
   "description": "Set of matrix calculation functions",
   "main": "index.js",
