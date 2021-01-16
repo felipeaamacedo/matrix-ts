@@ -1,6 +1,6 @@
 {
   "name": "@felipeaamacedo/matrix-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Set of matrix calculation functions",
   "main": "index.js",
   "scripts": {
