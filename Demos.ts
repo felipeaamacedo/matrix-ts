@@ -1,10 +1,10 @@
-import { Matrix } from './matrix-ts'
-import { multiply } from './matrix-ts'
-import { MatSubtr } from './matrix-ts'
-import { MatSum } from './matrix-ts'
-import { MatIdentity } from './matrix-ts'
-import { inv } from './matrix-ts'
-import { ArraySubtr } from './matrix-ts'
+import { Matrix } from './src/matrix-ts'
+import { multiply } from './src/matrix-ts'
+import { MatSubtr } from './src/matrix-ts'
+import { MatSum } from './src/matrix-ts'
+import { MatIdentity } from './src/matrix-ts'
+import { inv } from './src/matrix-ts'
+import { ArraySubtr } from './src/matrix-ts'
 
 let A:Matrix =  new Matrix(5,5)
 A.data = [[15,3,2,-12,2], [0,2,20,1,0], [6,7,-90,4,1], [40,30,2,-9,8], [-8,5,32,10,40]]
